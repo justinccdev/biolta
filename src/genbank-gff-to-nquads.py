@@ -6,5 +6,12 @@ parser = jargparse.ArgParser('Convert Genbank GFF into an n-quad file')
 parser.add_argument('gffPath', help='path to the GFF')
 args = parser.parse_args()
 
-with open(args.gffPath):
-    pass
+accessionKey = '#!genome-build-accession NCBI_Assembly:'
+accessionIdentifier = 'NONE FOUND'
+
+with open(args.gffPath) as f:
+    for line in f:
+        if line.startswith(accessionKey):
+            accessionIdentifier = line[len(accessionKey):]
+
+print accessionIdentifier
