@@ -18,6 +18,10 @@ with open(args.gffPath) as f:
                 accessionIdentifier = line[len(accessionKey):]
         else:
             components = line.split()
-            print components[8]
+            type = components[2]
+            rawAttributes = components[8]
+
+            if type == 'gene':
+                print rawAttributes
 
 print 'accessionIdentifier [%s]' % accessionIdentifier
