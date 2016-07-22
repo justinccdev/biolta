@@ -8,6 +8,8 @@ args = parser.parse_args()
 
 metadataPrefix = '#'
 accessionKey = '#!genome-build-accession NCBI_Assembly:'
+locusTagAttributeKey = 'locus_tag='
+
 accessionIdentifier = 'NONE FOUND'
 
 with open(args.gffPath) as f:
@@ -22,6 +24,11 @@ with open(args.gffPath) as f:
             rawAttributes = components[8]
 
             if type == 'gene':
-                print rawAttributes
+                attributes = rawAttributes.split(';')
+                for a in attributes:
+                    # print a
+                    if a.startswith(locusTagAttributeKey):
+                        locusTag = a[len(locusTagAttributeKey):]
+                        print locusTag
 
 print 'accessionIdentifier [%s]' % accessionIdentifier
