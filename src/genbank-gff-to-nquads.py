@@ -26,6 +26,9 @@ def parseRecord(record, locusTags):
             if key == locusTagAttributeKey:
                 locusTags.append(value)
 
+############
+### MAIN ###
+############
 parser = jargparse.ArgParser('Convert Genbank GFF into an n-quad file')
 parser.add_argument('gffPath', help='path to the GFF')
 parser.add_argument('outPath', help='path to output the n-quads')
