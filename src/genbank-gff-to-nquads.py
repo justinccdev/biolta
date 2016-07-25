@@ -35,3 +35,4 @@ with open(args.gffPath) as f:
 with open(args.outPath, 'w') as f:
     for locusTag in locusTags:
         f.write('<%s> <locus> "%s" .\n' % (accessionIdentifier, locusTag))
+        
