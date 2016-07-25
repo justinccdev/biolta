@@ -38,7 +38,8 @@ def parseRecord(record):
 def writeNquads(outPath, accessionIdentifier, geneRecords):
     with open(outPath, 'w') as f:
         for id, geneRecord in geneRecords.iteritems():
-            f.write('<%s> <locus> "%s" .\n' % (accessionIdentifier, id))
+            f.write('<%s> <locus> <%s> .\n' % (accessionIdentifier, id))
+            f.write('<%s> <name> "%s" .\n' % (id, geneRecord['Name']))
 
 ############
 ### MAIN ###
