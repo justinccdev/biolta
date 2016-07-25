@@ -7,12 +7,13 @@ import jargparse
 #################
 metadataPrefix = '#'
 accessionKey = '#!genome-build-accession NCBI_Assembly:'
-locusTagAttributeKey = 'locus_tag'
 
 #################
 ### FUNCTIONS ###
 #################
 def parseRecord(record, locusTags):
+    locusTagAttributeKey = 'locus_tag'
+
     components = record.split()
     type = components[2]
     rawAttributes = components[8]
