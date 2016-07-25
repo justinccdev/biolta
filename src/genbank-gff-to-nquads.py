@@ -6,11 +6,18 @@ import jargparse
 ### CONSTANTS ###
 #################
 metadataPrefix = '#'
-accessionKey = '#!genome-build-accession NCBI_Assembly:'
 
 #################
 ### FUNCTIONS ###
 #################
+def parseMetadataForAccessionIdentifier(line):
+    accessionKey = '#!genome-build-accession NCBI_Assembly:'
+
+    if line.startswith(accessionKey):
+        return line[len(accessionKey):]
+    else:
+        return None
+
 def parseRecord(record, locusTags):
     locusTagAttributeKey = 'locus_tag'
 
@@ -41,8 +48,9 @@ with open(args.gffPath) as f:
     for line in f:
         line = line.strip()
         if line.startswith(metadataPrefix):
-            if line.startswith(accessionKey):
-                accessionIdentifier = line[len(accessionKey):]
+            res = parseMetadataForAccessionIdentifier(line)
+            if res != None:
+                accessionIdentifier = res
         else:
             parseRecord(line, locusTags)
 
