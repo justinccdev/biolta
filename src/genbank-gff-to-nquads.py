@@ -21,9 +21,9 @@ with open(args.gffPath) as f:
             if line.startswith(accessionKey):
                 accessionIdentifier = line[len(accessionKey):]
         else:
-            components = line.split()
-            type = components[2]
-            rawAttributes = components[8]
+            lineComponents = line.split()
+            type = lineComponents[2]
+            rawAttributes = lineComponents[8]
 
             if type == 'gene':
                 attributes = rawAttributes.split(';')
@@ -35,4 +35,3 @@ with open(args.gffPath) as f:
 with open(args.outPath, 'w') as f:
     for locusTag in locusTags:
         f.write('<%s> <locus> "%s" .\n' % (accessionIdentifier, locusTag))
-        
