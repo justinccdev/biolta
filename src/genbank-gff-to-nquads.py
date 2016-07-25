@@ -3,11 +3,6 @@
 import jargparse
 
 #################
-### CONSTANTS ###
-#################
-metadataPrefix = '#'
-
-#################
 ### FUNCTIONS ###
 #################
 def parseMetadataForAccessionIdentifier(line):
@@ -18,25 +13,32 @@ def parseMetadataForAccessionIdentifier(line):
     else:
         return None
 
-def parseRecord(record, locusTags):
-    locusTagAttributeKey = 'locus_tag'
-
+"""
+Return attributes of the record if it's a gene record.
+Otherwise, return None.
+"""
+def parseRecord(record):
     components = record.split()
     type = components[2]
-    rawAttributes = components[8]
+    rawConcatAttributes = components[8]
+
+    attributes = {}
 
     if type == 'gene':
-        attributes = rawAttributes.split(';')
-        for a in attributes:
-            (key, value) = a.split('=')
+        rawAttributes = rawConcatAttributes.split(';')
+        for a in rawAttributes:
             # print a
-            if key == locusTagAttributeKey:
-                locusTags.append(value)
+            (key, value) = a.split('=')
+            attributes[key] = value
 
-def writeNquads(outPath, accessionIdentifier, locusTags):
+        return attributes
+    else:
+        return None
+
+def writeNquads(outPath, accessionIdentifier, geneRecords):
     with open(outPath, 'w') as f:
-        for locusTag in locusTags:
-            f.write('<%s> <locus> "%s" .\n' % (accessionIdentifier, locusTag))
+        for id, geneRecord in geneRecords.iteritems():
+            f.write('<%s> <locus> "%s" .\n' % (accessionIdentifier, id))
 
 ############
 ### MAIN ###
@@ -46,8 +48,11 @@ parser.add_argument('gffPath', help='path to the GFF')
 parser.add_argument('outPath', help='path to output the n-quads')
 args = parser.parse_args()
 
+metadataPrefix = '#'
+idKey = 'locus_tag'
+
 accessionIdentifier = 'NONE FOUND'
-locusTags = []
+geneRecords = {}
 
 with open(args.gffPath) as f:
     for line in f:
@@ -57,6 +62,8 @@ with open(args.gffPath) as f:
             if res != None:
                 accessionIdentifier = res
         else:
-            parseRecord(line, locusTags)
+            attributes = parseRecord(line)
+            if attributes != None:
+                geneRecords[attributes[idKey]] = attributes
 
-writeNquads(args.outPath, accessionIdentifier, locusTags)
+writeNquads(args.outPath, accessionIdentifier, geneRecords)
