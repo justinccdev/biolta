@@ -33,6 +33,11 @@ def parseRecord(record, locusTags):
             if key == locusTagAttributeKey:
                 locusTags.append(value)
 
+def writeNquads(outPath, accessionIdentifier, locusTags):
+    with open(outPath, 'w') as f:
+        for locusTag in locusTags:
+            f.write('<%s> <locus> "%s" .\n' % (accessionIdentifier, locusTag))
+
 ############
 ### MAIN ###
 ############
@@ -54,6 +59,4 @@ with open(args.gffPath) as f:
         else:
             parseRecord(line, locusTags)
 
-with open(args.outPath, 'w') as f:
-    for locusTag in locusTags:
-        f.write('<%s> <locus> "%s" .\n' % (accessionIdentifier, locusTag))
+writeNquads(args.outPath, accessionIdentifier, locusTags)
