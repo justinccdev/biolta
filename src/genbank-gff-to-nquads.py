@@ -36,12 +36,16 @@ def parseRecord(record):
         return None
 
 def writeNquads(outPath, accessionIdentifier, geneRecords):
-    iriStub = "urn:"
+    iriStub = 'urn:'
+    # graphName = 'g'
 
     with open(outPath, 'w') as f:
         for id, geneRecord in geneRecords.iteritems():
-            f.write('<%s%s> <%slocus> <%s%s> .\n' % (iriStub, accessionIdentifier, iriStub, iriStub, id))
-            f.write('<%s%s> <%sname> "%s" .\n' % (iriStub, id, iriStub, geneRecord['Name']))
+            f.write('<%s%s> <%slocus> <%s%s> <%s%s> .\n' % (iriStub, accessionIdentifier, iriStub, iriStub, id))
+            f.write('<%s%s> <%sname> "%s" <%s%s> .\n' % (iriStub, id, iriStub, geneRecord['Name']))
+
+            # f.write('<%s%s> <%slocus> <%s%s> <%s%s> .\n' % (iriStub, accessionIdentifier, iriStub, iriStub, id, iriStub, graphName))
+            # f.write('<%s%s> <%sname> "%s" <%s%s> .\n' % (iriStub, id, iriStub, geneRecord['Name'], iriStub, graphName))
 
 ############
 ### MAIN ###
