@@ -36,7 +36,7 @@ def parseRecord(record):
         return None
 
 def writeNquads(outPath, accessionIdentifier, geneRecords):
-    iriStub = "urn:"
+    iriStub = "_:"
 
     with open(outPath, 'w') as f:
         for id, geneRecord in geneRecords.iteritems():
